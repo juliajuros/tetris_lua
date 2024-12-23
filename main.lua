@@ -268,7 +268,7 @@ end
 
 function save_game()
     local game_data = {
-        board = nil_to_minus1(board), 
+        board = nil_to_minus1(board),
         current_tetromino = current_tetromino,
         current_x = current_x,
         current_y = current_y,
@@ -282,7 +282,7 @@ function save_game()
         print("Error encoding JSON!")
         return
     end
-    
+
     local file = love.filesystem.newFile("saved_game.json", "w")
 
     if not file then
@@ -298,11 +298,18 @@ end
 
 function nil_to_minus1(obj)
     local new_table = {}
-    for i, value in ipairs(obj) do
-        if value == nil then
+    local max_index = 0
+
+    for i, _ in pairs(obj) do
+        if i > max_index then
+            max_index = i
+        end
+    end
+    for i = 1, max_index do
+        if obj[i] == nil then
             new_table[i] = -1
         else
-            new_table[i] = value
+            new_table[i] = obj[i]
         end
     end
     return new_table
